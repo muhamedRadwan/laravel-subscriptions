@@ -67,7 +67,7 @@ trait HasPlanSubscriptions
      */
     public function planSubscription(string $subscriptionSlug): ?PlanSubscription
     {
-        return $this->planSubscriptions()->where('slug', $subscriptionSlug)->first();
+        return $this->planSubscriptions->where('slug', $subscriptionSlug)->first();
     }
 
     /**
