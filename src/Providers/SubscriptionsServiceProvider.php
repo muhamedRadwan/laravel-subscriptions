@@ -62,4 +62,37 @@ class SubscriptionsServiceProvider extends ServiceProvider
         $this->publishesMigrations('rinvex/laravel-subscriptions');
         ! $this->autoloadMigrations('rinvex/laravel-subscriptions') || $this->loadMigrationsFrom(__DIR__.'/../../database/migrations');
     }
+
+    /**
+     * Determine if the application is running in the console.
+     *
+     * @TODO: Implement this method to detect if we're in active dev zone or not!
+     *        Ex: running inside cortex/console action
+     *
+     * @return bool
+     */
+    public function runningInDevzone()
+    {
+        return true;
+    }
+
+    /**
+     * Register console commands.
+     *
+     * @param array $commands
+     *
+     * @return void
+     */
+    protected function registerCommands(array $commands): void
+    {
+        if (!$this->app->runningInConsole() && !$this->runningInDevzone()) {
+            return;
+        }
+
+        foreach ($commands as $key => $value) {
+            $this->app->singleton($value, $key);
+        }
+
+        $this->commands(array_values($commands));
+    }
 }
